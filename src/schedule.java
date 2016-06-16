@@ -61,7 +61,9 @@ public class schedule extends JFrame {
 		JButton btnGenerate = new JButton("Generate");
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 			}
+			
 		});
 		
 		JButton btnTest = new JButton("Test");

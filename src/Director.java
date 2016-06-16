@@ -53,6 +53,10 @@ public class Director extends JFrame {
 		contentPane.add(comboBox);
 		
 		JButton button = new JButton("Submit");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		button.setBounds(366, 11, 89, 23);
 		contentPane.add(button);
 		
