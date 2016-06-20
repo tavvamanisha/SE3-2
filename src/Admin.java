@@ -19,7 +19,7 @@ public class Admin extends JFrame {
 
 	private JPanel contentPane;
 	String file;
-	static University[] univ;
+	static University1[] univ;
 	static GradSchools[] gradSchools;
 	static Faculty[] facultyArray;
 	static Degree[] degreeArray;
@@ -29,21 +29,23 @@ public class Admin extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					
 					Admin frame = new Admin();
 					frame.setVisible(true);
+					if(args[0] == "1"){
+						importUniversity("TestDataUniversityName.csv");
+						importGradSchools("TestDataGradSchools.csv");
+						importFaculty("TestDataFaculty.csv");
+						importDegrees("TestDataDegrees.csv");
+						importDegreePlan("TestDataDegreePlanReq.csv");
+						importCourse("TestDataCourses.csv");
+						importSemesterArray("TestDataSemesters.csv");
+					}
 					
-					importUniversity("TestDataUniversityName.csv");
-					importGradSchools("TestDataGradSchools.csv");
-					importFaculty("TestDataFaculty.csv");
-					importDegrees("TestDataDegrees.csv");
-					importDegreePlan("TestDataDegreePlanReq.csv");
-					importCourse("TestDataCourses.csv");
-					importSemesterArray("TestDataSemesters.csv");
 			
 					
 					
@@ -53,7 +55,69 @@ public class Admin extends JFrame {
 			}
 		});
 	}
-		protected static void importSemesterArray(String semesterFile) {
+	
+	
+	public static University1[] getUniv() {
+		return univ;
+	}
+
+
+	public static void setUniv(University1[] univ) {
+		Admin.univ = univ;
+	}
+
+
+	public static GradSchools[] getGradSchools() {
+		return gradSchools;
+	}
+
+
+	public static void setGradSchools(GradSchools[] gradSchools) {
+		Admin.gradSchools = gradSchools;
+	}
+
+
+	public static Faculty[] getFacultyArray() {
+		return facultyArray;
+	}
+
+
+	public static void setFacultyArray(Faculty[] facultyArray) {
+		Admin.facultyArray = facultyArray;
+	}
+
+
+	public static Degree[] getDegreeArray() {
+		return degreeArray;
+	}
+
+
+	public static void setDegreeArray(Degree[] degreeArray) {
+		Admin.degreeArray = degreeArray;
+	}
+
+
+	public static Course[] getCourseArray() {
+		return courseArray;
+	}
+
+
+	public static void setCourseArray(Course[] courseArray) {
+		Admin.courseArray = courseArray;
+	}
+
+
+	public static Semester[] getSemArray() {
+		return semArray;
+	}
+
+
+	public static void setSemArray(Semester[] semArray) {
+		Admin.semArray = semArray;
+	}
+
+
+	protected static void importSemesterArray(String semesterFile) {
 		
 		BufferedReader br,br1; // BufferedReader is used to read a file.
 		
@@ -491,7 +555,7 @@ public class Admin extends JFrame {
 	            // Reading the file again to store University values in University Object array.
 	            
 	            int lineNumber=0;
-	            univ = new University[maxLength];
+	            univ = new University1[maxLength];
 	            // This is the University Object Array defined as variable University.
 	            // This will have the Array of University Objects.
 	            // Each Object will contain the properties of 1 row of the University CSV file.
@@ -501,7 +565,7 @@ public class Admin extends JFrame {
 	            	csvFile = br1.readLine(); // Reading 1 row of the CSV file.
 	            	
 	            	String[] cols = csvFile.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)"); // Slpitting 1 row with the parameter comma (,)
-	                University university = new University(); // Defining a new University object inside the for loop. 
+	                University1 university = new University1(null, null); // Defining a new University object inside the for loop. 
 	                
 	                university.setUniversityName(cols[0]);
 	                university.setUniversityAbb(cols[1]);

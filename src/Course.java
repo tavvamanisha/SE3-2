@@ -389,6 +389,14 @@ public class Course extends JFrame {
 		            courseArray[j].getFaculty());
 	            }
 				
+				JFrame parent = new JFrame();
+		        JOptionPane.showMessageDialog(parent,"Course Added successfully.");
+		        
+		        Admin admin = new Admin();
+		        admin.setCourseArray(courseArray);
+		        String[] str = new String[1];
+		        str[0] = "0";
+		        admin.main(str);
 				
 			}
 		});
@@ -490,6 +498,13 @@ public class Course extends JFrame {
 	            			courseArray[j].getFaculty());
 	            }
 				
+				Admin admin = new Admin();
+		        admin.setCourseArray(courseArray);
+		        String[] str = new String[1];
+		        str[0] = "0";
+		        admin.main(str);
+				
+				
 			    
 			}
 		});
@@ -553,6 +568,16 @@ public class Course extends JFrame {
 	            			courseArray[j].getPrecourse() + " " +
 	            			courseArray[j].getFaculty());
 	            }
+				
+				JFrame parent = new JFrame();
+		        JOptionPane.showMessageDialog(parent,"Course Updated successfully.");
+		        
+		        Admin admin = new Admin();
+		        admin.setCourseArray(courseArray);
+		        String[] str = new String[1];
+		        str[0] = "0";
+		        admin.main(str);
+				
 			}
 		});
 		btnupdate.setBounds(273, 212, 89, 23);
