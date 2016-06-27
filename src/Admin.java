@@ -294,7 +294,7 @@ public class Admin extends JFrame {
 	            				crs.setHours(cols[2]);
 	            				crs.setCourseType(cols[3]);
 	            				
-	            				Course[] crsArray = degreeArray[k].getCourseArray();
+	            				/*Course[] crsArray = degreeArray[k].getCourseArray();
 	            				Course[] tempCrsArray;
 	            				if(crsArray != null){
 	            					tempCrsArray = new Course[crsArray.length + 1];
@@ -308,7 +308,7 @@ public class Admin extends JFrame {
 	            					tempCrsArray[0] = crs;
 	            				}
 	            				
-	            				degreeArray[k].setCourseArray(tempCrsArray);
+	            				degreeArray[k].setCourseArray(tempCrsArray);*/
 	            				
 	            			}
 	            		}
@@ -319,7 +319,7 @@ public class Admin extends JFrame {
 	            
 	            // Now to verify if the import was successfully saved in the course array.
 	            
-	            for (int j=1;j<degreeArray.length;j++){
+	            /*for (int j=1;j<degreeArray.length;j++){
 	            	Course[] crsArray = degreeArray[j].getCourseArray();
 	            	System.out.println(degreeArray[j].getDegreeCode());
 	            	for(int k=0;k<crsArray.length;k++){
@@ -330,7 +330,7 @@ public class Admin extends JFrame {
 	            				crsArray[k].getCoursenum());
 	            	}
 	            	
-	            }
+	            }*/
 	        
 			}
 	        catch (FileNotFoundException e) {

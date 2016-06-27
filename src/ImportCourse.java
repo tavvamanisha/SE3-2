@@ -136,36 +136,45 @@ public class ImportCourse extends JFrame {
 			                		String[] num = studentArray[j].getCourseNum();
 			                		String[] name = studentArray[j].getCourseName();
 			                		String[] crsSem = studentArray[j].getCourseSemester();
+			                		String[] grade = studentArray[j].getGrade();
 			                		
 			                		if(num == null){
 			                			num = new String[1]; 
 			                			name = new String[1];
 			                			crsSem = new String[1];
+			                			grade = new String[1];
 			                			
 			                			num[0] = cols[1];
 	                					name[0] = cols[2];
 	                					crsSem[0] = cols[3];
+	                					grade[0] = cols[4];
 	                					
 	                					studentArray[j].setCourseNum(num);
 	                					studentArray[j].setCourseName(name);
 	                					studentArray[j].setCourseSemester(crsSem);
+	                					studentArray[j].setGrade(grade);
 			                		}else{
 			                			String[] num1 = new String[num.length+1];
 			                			String[] name1 = new String[name.length + 1];
 			                			String[] crsSem1 = new String[crsSem.length + 1];
+			                			String[] grade1 = new String[grade.length + 1];
 			                			
 			                			for(int k=0;k<num.length;k++){
 			                				num1[k]=num[k];
 			                				name1[k]=name[k];
 			                				crsSem1[k]=crsSem[k];
+			                				grade1[k]=grade[k];
 			                			}
 			                			num1[num.length]=cols[1];
 			                			name1[num.length]=cols[2];
 			                			crsSem1[num.length]=cols[3];
+			                			grade1[num.length]=cols[4];
 			                			
 			                			studentArray[j].setCourseNum(num1);
 	                					studentArray[j].setCourseName(name1);
 	                					studentArray[j].setCourseSemester(crsSem1);
+	                					studentArray[j].setGrade(grade1);
+	                					
 			                		}
 			                		
 			                		
@@ -182,7 +191,8 @@ public class ImportCourse extends JFrame {
 				            studentArray[j].getSemester() + " "+
 				            studentArray[j].getCourseNum() + " "+
 				            studentArray[j].getCourseName() + " "+
-				            studentArray[j].getCourseSemester());
+				            studentArray[j].getCourseSemester() + " "+
+				            studentArray[j].getGrade());
 			            }
 			            
 			            

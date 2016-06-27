@@ -7,6 +7,16 @@ public class Student {
 	private String[] courseNum;
 	private String[] courseName;
 	private String[] courseSemester;
+	private String[] grade;
+	
+	
+	
+	public String[] getGrade() {
+		return grade;
+	}
+	public void setGrade(String[] grade) {
+		this.grade = grade;
+	}
 	public String getRollNo() {
 		return rollNo;
 	}

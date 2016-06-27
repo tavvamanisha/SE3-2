@@ -29,20 +29,9 @@ public class Degree extends JFrame {
 	private String gradSchool;
 	private String degreeName;
 	private String forecast;
-	private String description;
-	private Course[] courseArray;
-
 	
 	
-	public Course[] getCourseArray() {
-		return courseArray;
-	}
-
-	public void setCourseArray(Course[] courseArray) {
-		this.courseArray = courseArray;
-	}
-
-	public String getDegreeCode() {
+		public String getDegreeCode() {
 		return degreeCode;
 	}
 
@@ -67,14 +56,6 @@ public class Degree extends JFrame {
 	}
 
 	
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public String getForecast() {
 		return forecast;
 	}

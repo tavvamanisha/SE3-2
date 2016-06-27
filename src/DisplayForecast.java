@@ -17,13 +17,12 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class DisplayDegree extends JFrame {
+public class DisplayForecast extends JFrame {
 
 	private JPanel contentPane;
-	private DegreePlan[] degreeArray;
+	private Degree[] degreeArray;
 	JTable table = new JTable();
 	DefaultTableModel model = new DefaultTableModel();
-	
 
 	/**
 	 * Launch the application.
@@ -32,7 +31,7 @@ public class DisplayDegree extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DisplayDegree frame = new DisplayDegree(null,null);
+					DisplayForecast frame = new DisplayForecast(null,null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,7 +43,7 @@ public class DisplayDegree extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public DisplayDegree(final DegreePlan[] degreeArr, final String[] args) {
+	public DisplayForecast(final Degree[] degreeArr, final String[] args) {
 		degreeArray = degreeArr;
 		setTitle("Display Results");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,7 +63,7 @@ public class DisplayDegree extends JFrame {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel model = (DefaultTableModel) table.getModel();
-				model.addRow(new Object[]{"{Code}","{Name}","{Hours}","{Type}","{Courses}"});
+				model.addRow(new Object[]{"{Degree Code}","{Grad School}","{Degree Name}","{Forecast}"});
 				
 				JFrame parent = new JFrame();
 		        JOptionPane.showMessageDialog(parent,"New Row added at the bottom. Please fill the values and Save.");
@@ -83,13 +82,13 @@ public class DisplayDegree extends JFrame {
 					JFrame parent = new JFrame();
 			        JOptionPane.showMessageDialog(parent,"Please select a row and edit by double-click.");
 				}else{
-					DegreePlan degree = new DegreePlan();
+					Degree degree = new Degree();
+					
 					degree.setDegreeCode((String)table.getModel().getValueAt(row, 0));
-					degree.setDescription((String)table.getModel().getValueAt(row, 1));
-					degree.setHours((String)table.getModel().getValueAt(row, 2));
-					degree.setType((String)table.getModel().getValueAt(row, 3));
-					degree.setCourses((String)table.getModel().getValueAt(row, 4));
-		
+					degree.setGradSchool((String)table.getModel().getValueAt(row, 1));
+					degree.setDegreeName((String)table.getModel().getValueAt(row, 2));
+					degree.setForecast((String)table.getModel().getValueAt(row, 3));
+					
 					degreeArray[row+1] = degree;
 					
 					JFrame parent = new JFrame();
@@ -118,7 +117,7 @@ public class DisplayDegree extends JFrame {
 						parent.dispose();
 					}else if(selectedOption == JOptionPane.OK_OPTION){
 						
-						DegreePlan[] degree = new DegreePlan[degreeArray.length-1];
+						Degree[] degree = new Degree[degreeArray.length-1];
 						
 						for(int i=0;i<=row;i++){
 							degree[i]=degreeArray[i];
@@ -134,7 +133,7 @@ public class DisplayDegree extends JFrame {
 						JFrame parent1 = new JFrame();
 						JOptionPane.showMessageDialog(parent1, "Degree "+ degreeDeleted+" deleted succesfully");
 						
-						new DisplayDegree(degreeArray,args).setVisible(true);
+						new DisplayForecast(degreeArray,args).setVisible(true);
 						setVisible(false);
 						dispose();
 					}
@@ -157,7 +156,7 @@ public class DisplayDegree extends JFrame {
 				}else if(selectedOption == JOptionPane.OK_OPTION){
 					args[0]="0";
 					new Home(args).setVisible(true);
-					new Home(args).setDegreePlanArray(degreeArray);
+					new Home(args).setDegreeArray(degreeArray);
 					new Home(args);
 					dispose();
 				}
@@ -169,14 +168,13 @@ public class DisplayDegree extends JFrame {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				DegreePlan[] degrees = new DegreePlan[table.getRowCount()+1];
+				Degree[] degrees = new Degree[table.getRowCount()+1];
 				for(int row=0;row<table.getRowCount();row++){
-					DegreePlan degree = new DegreePlan();
+					Degree degree = new Degree();
 					degree.setDegreeCode((String)table.getModel().getValueAt(row, 0));
-					degree.setDescription((String)table.getModel().getValueAt(row, 1));
-					degree.setHours((String)table.getModel().getValueAt(row, 2));
-					degree.setType((String)table.getModel().getValueAt(row, 3));
-					degree.setCourses((String)table.getModel().getValueAt(row, 4));
+					degree.setGradSchool((String)table.getModel().getValueAt(row, 1));
+					degree.setDegreeName((String)table.getModel().getValueAt(row, 2));
+					degree.setForecast((String)table.getModel().getValueAt(row, 3));
 					
 					degrees[row+1]=degree;
 				}
@@ -187,7 +185,7 @@ public class DisplayDegree extends JFrame {
 				JFrame parent = new JFrame();
 		        JOptionPane.showMessageDialog(parent,"Changes Saved succesfully.");
 				
-				new DisplayDegree(degreeArray,args).setVisible(true);
+				new DisplayForecast(degreeArray,args).setVisible(true);
 				setVisible(false);
 				dispose();
 			}
@@ -238,21 +236,20 @@ public class DisplayDegree extends JFrame {
 		table.getTableHeader().getBackground().getBlue();
 		table.setAutoCreateRowSorter(true);
 		
-		String[] header = new String[5];
+		String[] header = new String[4];
 		
 		header[0] = (degreeArr[0].getDegreeCode());
-		header[1] = (degreeArr[0].getDescription());
-		header[2] = (degreeArr[0].getHours());
-		header[3] = degreeArr[0].getType();
-		header[4] = degreeArr[0].getCourses();
+		header[1] = (degreeArr[0].getGradSchool());
+		header[2] = (degreeArr[0].getDegreeName());
+		header[3] = degreeArr[0].getForecast();
 		
 		String[][] obj = new String[degreeArr.length-1][9];
 		for(int i=0;i<degreeArr.length-1;i++){
 			obj[i][0] = (degreeArr[i+1].getDegreeCode());
-			obj[i][1] = (degreeArr[i+1].getDescription());
-			obj[i][2] = (degreeArr[i+1].getHours());
-			obj[i][3] = (degreeArr[i+1].getType());
-			obj[i][4] = degreeArr[i+1].getCourses();
+			obj[i][1] = (degreeArr[i+1].getGradSchool());
+			obj[i][2] = (degreeArr[i+1].getDegreeName());
+			obj[i][3] = (degreeArr[i+1].getForecast());
+			
 		}
 		
 		table.setModel(new DefaultTableModel(obj,header));
@@ -261,8 +258,6 @@ public class DisplayDegree extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		contentPane.setLayout(gl_contentPane);
-		//contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{btnGenerate, btnTest, lblNewLabel, lblNewLabel_1}));
-		
+		//contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{btnGenerate, btnTest, lblNewLabel, lblNewLabel_1}));	}
 	}
-
 }

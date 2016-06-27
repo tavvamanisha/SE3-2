@@ -33,8 +33,9 @@ public class Home extends JFrame {
 	static Faculty[] facultyArray;
 	static Degree[] degreeArray;
 	static Course[] courseArray;
-	static Semester[] semArray;
+	//static Semester[] semArray;
 	static Student[] studentArray;
+	static DegreePlan[] degreePlanArray;
 
 	/**
 	 * Launch the application.
@@ -114,6 +115,20 @@ public class Home extends JFrame {
 	public static void setDegreeArray(Degree[] degreeArray) {
 		Home.degreeArray = degreeArray;
 	}
+	
+	
+
+
+
+	public static DegreePlan[] getDegreePlanArray() {
+		return degreePlanArray;
+	}
+
+
+
+	public static void setDegreePlanArray(DegreePlan[] degreePlanArray) {
+		Home.degreePlanArray = degreePlanArray;
+	}
 
 
 
@@ -128,7 +143,7 @@ public class Home extends JFrame {
 	}
 
 
-
+	/*
 	public static Semester[] getSemArray() {
 		return semArray;
 	}
@@ -137,10 +152,10 @@ public class Home extends JFrame {
 
 	public static void setSemArray(Semester[] semArray) {
 		Home.semArray = semArray;
-	}
+	}*/
 	
 	
-protected static void importSemesterArray(String semesterFile) {
+	/*protected static void importSemesterArray(String semesterFile) {
 		
 		BufferedReader br,br1; // BufferedReader is used to read a file.
 		
@@ -197,7 +212,7 @@ protected static void importSemesterArray(String semesterFile) {
         } catch (IOException e) {
             e.printStackTrace();
         }
-	}
+	}*/
 
 		protected static void importCourse(String courseFile) {
 			
@@ -243,7 +258,7 @@ protected static void importSemesterArray(String semesterFile) {
 	                course.setSpring(cols[6]);
 	                course.setSummer(cols[7]);
 	                course.setPrecourse(cols[8]);
-	                course.setFaculty(cols[9].split(","));
+	                course.setFaculty(cols[9].replaceAll("^\"|\"$", "").split(","));
 	                
 	                courseArray[i] = course; // Putting this newly defined University Object university in the University Object Array.
 	                
@@ -274,7 +289,7 @@ protected static void importSemesterArray(String semesterFile) {
 
 		protected static void importDegreePlan(String degreePlanFile) {
 			
-			BufferedReader br,br1; // BufferedReader is used to read a file.
+			/*BufferedReader br,br1; // BufferedReader is used to read a file.
 			
 			String csvFile = degreePlanFile; // Whatever the file was imported, it will be saved in this variable, csvFile.
 			//System.out.println(fileUniversity);
@@ -353,6 +368,61 @@ protected static void importSemesterArray(String semesterFile) {
 	            				crsArray[k].getCoursenum());
 	            	}
 	            	
+	            }
+	        
+			}*/
+			BufferedReader br,br1; // BufferedReader is used to read a file.
+			
+			String csvFile = degreePlanFile; // Whatever the file was imported, it will be saved in this variable, csvFile.
+			//System.out.println(fileUniversity);
+			int maxLength=0;
+			String line;
+	      
+			try{
+	            br = new BufferedReader(new FileReader(csvFile));
+	            // Reading the file once to get total number of Universities.
+	           
+	            while ((line = br.readLine()) != null) 
+	            {
+	                maxLength++;
+	            }
+	            // Total number of Universities are saved in the int maxLength.
+	        
+	            br1= new BufferedReader( new FileReader(csvFile));
+	            // Reading the file again to store University values in University Object array.
+	            
+	            int lineNumber=0;
+	            degreePlanArray = new DegreePlan[maxLength];
+	            // This is the University Object Array defined as variable University.
+	            // This will have the Array of University Objects.
+	            // Each Object will contain the properties of 1 row of the University CSV file.
+	            
+	            for(int i =0; i<maxLength; i++){ // Iterating through all the rows of the CSV file.
+	            
+	            	csvFile = br1.readLine(); // Reading 1 row of the CSV file.
+	            	
+	            	String[] cols = csvFile.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)"); // Slpitting 1 row with the parameter comma (,)
+	                DegreePlan degreePlan = new DegreePlan(); // Defining a new University object inside the for loop. 
+	                
+	                degreePlan.setDegreeCode(cols[0]);
+	                degreePlan.setDescription(cols[1]);
+	                degreePlan.setHours(cols[2]);
+	                degreePlan.setType(cols[3]);
+	                degreePlan.setCourses(cols[4]);
+	                
+	                degreePlanArray[i] = degreePlan; // Putting this newly defined University Object university in the University Object Array.
+	                
+	            }
+	            
+	            // Now to verify if the import was successfully saved in the course array.
+	            
+	            for (int j=1;j<maxLength;j++){
+	            	System.out.println(
+	            			degreePlanArray[j].getDegreeCode()+
+	            			degreePlanArray[j].getDescription()+
+	            			degreePlanArray[j].getHours()+
+	            			degreePlanArray[j].getDescription()+
+	            			degreePlanArray[j].getCourses());
 	            }
 	        
 			}
@@ -600,8 +670,8 @@ protected static void importSemesterArray(String semesterFile) {
 			importUniversity("TestDataUniversityName.csv");
 			//importGradSchools("TestDataGradSchools.csv");
 			importFaculty("TestDataFaculty.csv");
-			importDegrees("TestDataDegrees.csv");
-			//importDegreePlan("TestDataDegreePlanReq.csv");
+			importDegrees("TestDataDegrees.csv");			// Forecast
+			importDegreePlan("TestDataDegreePlanReq.csv");	// Degree
 			importCourse("TestDataCourses.csv");
 			//importSemesterArray("TestDataSemesters.csv");
 		}
@@ -630,8 +700,8 @@ protected static void importSemesterArray(String semesterFile) {
 		JMenuItem mntmDegree = new JMenuItem("Degree");
 		mntmDegree.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new DisplayDegree(degreeArray,args).setVisible(true);
-				new DisplayDegree(degreeArray,args);
+				new DisplayDegree(degreePlanArray,args).setVisible(true);
+				new DisplayDegree(degreePlanArray,args);
 				setVisible(false);
 				dispose();
 			}
@@ -656,7 +726,14 @@ protected static void importSemesterArray(String semesterFile) {
 		}else if(args[1].equalsIgnoreCase("D")){
 			mntmForecast.setEnabled(true);
 		}
-		
+		mntmForecast.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new DisplayForecast(degreeArray,args).setVisible(true);
+				new DisplayForecast(degreeArray,args);
+				setVisible(false);
+				dispose();
+			}
+		});
 		mmMaintainence.add(mntmForecast);
 		
 		JMenuItem mntmFaculty = new JMenuItem("Faculty");
@@ -722,6 +799,14 @@ protected static void importSemesterArray(String semesterFile) {
 		mnNewMenu.add(mntmNewMenuItem_2);
 		
 		JMenuItem mntmGenerateSchedule = new JMenuItem("Generate Schedule ");
+		mntmGenerateSchedule.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new GenerateSchedule(args,studentArray, degreeArray, degreePlanArray, courseArray, facultyArray).setVisible(true);
+				new GenerateSchedule(args,studentArray, degreeArray, degreePlanArray, courseArray, facultyArray);
+				setVisible(false);
+				dispose();
+			}
+		});
 		mnNewMenu.add(mntmGenerateSchedule);
 		
 		JMenu mnSystem = new JMenu("System");

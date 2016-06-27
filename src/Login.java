@@ -181,7 +181,6 @@ public class Login extends JFrame {
 							foundRole = user[i].getRole();
 						}
 					}
-								
 				}
 				if(foundRole!= null){			
 					if(foundRole.equalsIgnoreCase("A"))
@@ -207,8 +206,7 @@ public class Login extends JFrame {
 					JFrame parent = new JFrame();
 			        JOptionPane.showMessageDialog(parent,"Username or Password incorrect");
 				}
-				
-				}
+			}
 		});
 		btnLogin.setToolTipText("");
 		btnLogin.setForeground(new Color(0, 0, 0));

@@ -39,6 +39,8 @@ public class Course extends JFrame {
 	String precourse;
 	String[] faculty;
 	Course[] courses;
+	int numberOfStudent=0;
+	
 	static Course[] courseArray;
 	String courseType;
 	String hours;
@@ -109,7 +111,7 @@ public class Course extends JFrame {
                 crs.setSpring(cols[6]);
                 crs.setSummer(cols[7]);
                 crs.setPrecourse(cols[8]);
-                String[] faculty = cols[9].split(","); 
+                String[] faculty = cols[9].replaceAll("^\"|\"$", "").split(","); 
                 crs.setFaculty(faculty);
                 
                 courses[i] = crs; // Putting this newly defined Course Object crs in the Courses Object Array.
@@ -140,8 +142,14 @@ public class Course extends JFrame {
 		
 	}
 
-	
-	
+	public int getNumberOfStudent() {
+		return numberOfStudent;
+	}
+
+	public void setNumberOfStudent(int numberOfStudent) {
+		this.numberOfStudent = numberOfStudent;
+	}
+
 	public String[] getFaculty() {
 		return faculty;
 	}
