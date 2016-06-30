@@ -23,6 +23,7 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 
 import javax.swing.ListSelectionModel;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Vector;
 
 public class DisplayCourses extends JFrame {
@@ -76,7 +77,7 @@ public class DisplayCourses extends JFrame {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel model = (DefaultTableModel) table.getModel();
-				model.addRow(new Object[]{"Code","Name","Description","hours","Capacity","Fall?","Spring?","Summer?","prereq"});
+				model.addRow(new Object[]{"Code","Name","Description","hours","Capacity","Fall?","Spring?","Summer?","prereq","FacultyLastName"});
 				
 				JFrame parent = new JFrame();
 		        JOptionPane.showMessageDialog(parent,"New Row added at the bottom. Please fill the values and Save.");
@@ -105,6 +106,9 @@ public class DisplayCourses extends JFrame {
 					crs.setSpring((String)table.getModel().getValueAt(row, 6));
 					crs.setSummer((String)table.getModel().getValueAt(row, 7));
 					crs.setPrecourse((String)table.getModel().getValueAt(row, 8));
+					String str = (String)table.getModel().getValueAt(row, 9);
+					
+					crs.setFaculty(str.split(","));
 					
 					courseArray[row+1] = crs;
 					
@@ -198,6 +202,8 @@ public class DisplayCourses extends JFrame {
 					crs.setSpring((String)table.getModel().getValueAt(row, 6));
 					crs.setSummer((String)table.getModel().getValueAt(row, 7));
 					crs.setPrecourse((String)table.getModel().getValueAt(row, 8));
+					String str = (String)table.getModel().getValueAt(row, 9);
+					crs.setFaculty(str.replaceAll("^\"|\"$", "").replaceAll("\\[|\\]||\\s", "").split(","));
 					
 					courses[row+1]=crs;
 				}
@@ -259,7 +265,7 @@ public class DisplayCourses extends JFrame {
 		table.getTableHeader().getBackground().getBlue();
 		table.setAutoCreateRowSorter(true);
 		
-		String[] header = new String[9];
+		String[] header = new String[10];
 		
 		header[0] = (courseArr[0].getCoursenum());
 		header[1] = (courseArr[0].getCoursename());
@@ -270,8 +276,9 @@ public class DisplayCourses extends JFrame {
 		header[6] = (courseArr[0].getSpring());
 		header[7] = (courseArr[0].getSummer());
 		header[8] = (courseArr[0].getPrecourse());
+		header[9] = ("Faculty Last Name");
 		
-		String[][] obj = new String[courseArr.length-1][9];
+		String[][] obj = new String[courseArr.length-1][10];
 		for(int i=0;i<courseArr.length-1;i++){
 			obj[i][0] = (courseArr[i+1].getCoursenum());
 			obj[i][1] = (courseArr[i+1].getCoursename());
@@ -282,6 +289,8 @@ public class DisplayCourses extends JFrame {
 			obj[i][6] = (courseArr[i+1].getSpring());
 			obj[i][7] = (courseArr[i+1].getSummer());
 			obj[i][8] = (courseArr[i+1].getPrecourse());
+			//obj[i][9] = Arrays.deepToString((courseArr[i+1].getFaculty()));
+			obj[i][9] = Arrays.toString(((courseArr[i+1].getFaculty())));
 		}
 		
 		table.setModel(new DefaultTableModel(obj,header));
