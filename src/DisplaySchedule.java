@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -30,6 +31,8 @@ public class DisplaySchedule extends JFrame {
 
 	private JPanel contentPane;
 	private static JTable table;
+	private JButton btnTestSchedule;
+	private JButton btnSaveSchedule;
 	
 	
 	/**
@@ -39,7 +42,7 @@ public class DisplaySchedule extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DisplaySchedule frame = new DisplaySchedule(null, null);
+					DisplaySchedule frame = new DisplaySchedule(null, null, null, null, null, null, null, null, null, null, null, null, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -50,9 +53,23 @@ public class DisplaySchedule extends JFrame {
 	
 	/**
 	 * Create the frame.
+	 * @param semester 
+	 * @param maxOverage 
+	 * @param facultyLoad 
+	 * @param minFillPercent 
+	 * @param degPlanArr 
+	 * @param degArr 
+	 * @param studArr 
+	 * @param facArr 
+	 * @param crsArr 
+	 * @param args 
 	 * @param numberOfStudents 
+	 * @param bestGene 
 	 */
-	public DisplaySchedule(Section[] sectionArray, HashMap<String, Integer> numberOfStudents) {
+	public DisplaySchedule(String[] args, Course[] crsArr, Faculty[] facArr, Student[] studArr, 
+			Degree[] degArr, DegreePlan[] degPlanArr, String minFillPercent, 
+			HashMap<String, Integer> facultyLoad, String maxOverage, String semester,
+			Section[] secArray, HashMap<String, Integer> numberOfStudents, int[] bestGene) {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 768, 480);
@@ -61,52 +78,69 @@ public class DisplaySchedule extends JFrame {
 		setContentPane(contentPane);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		
+		JButton btnBack = new JButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+			}
+		});
+		
+		btnTestSchedule = new JButton("Test Schedule");
+		btnTestSchedule.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new TestSchedule(args, bestGene, secArray, studArr, degPlanArr, degArr, minFillPercent, maxOverage, 
+						crsArr, facArr, facultyLoad, semester, numberOfStudents).setVisible(true);
+				//new TestSchedule(args, bestGene, secArray, studArr, degPlanArr, degArr, minFillPercent, maxOverage, 
+						//crsArr, facArr, facultyLoad, semester, numberOfStudents);
+				dispose();
+				
+			}
+		});
+		
+		btnSaveSchedule = new JButton("Save Schedule");
+		btnSaveSchedule.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				args[0]="0";
+				new Home(args).setVisible(true);
+				new Home(args).setSectionArray(secArray);
+				JFrame parent = new JFrame();
+		        JOptionPane.showMessageDialog(parent,"Schedule saved succesfully.");
+				new Home(args);
+				dispose();
+			}
+		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(19)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE)
-							.addContainerGap())
-						/*.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								//.addComponent(lblNewLabel)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									//.addComponent(lblNewLabel_1)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									//.addComponent(textSectionOverage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addGap(38)))
-							.addPreferredGap(ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
-							//.addComponent(textSemester, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(75)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									//.addComponent(lblNewLabel_2)
-									.addGap(18)
-									//.addComponent(textSectionFill, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								//.addComponent(btnNewButton))
-							.addGap(37))*/))
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap(220, Short.MAX_VALUE)
+					.addComponent(btnTestSchedule)
+					.addGap(40)
+					.addComponent(btnSaveSchedule)
+					.addGap(39)
+					.addComponent(btnBack)
+					.addGap(200))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					//.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-							/*.addComponent(lblNewLabel)
-						.addComponent(lblNewLabel_2)
-						.addComponent(textSectionFill, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textSemester, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_1)
-						.addComponent(textSectionOverage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnNewButton))
-					.addGap(38)*/
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 318, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(203, Short.MAX_VALUE))
+					.addGap(39)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnBack)
+						.addComponent(btnTestSchedule)
+						.addComponent(btnSaveSchedule))
+					.addContainerGap(40, Short.MAX_VALUE))
 		);
+		
+		
+		
 		
 		table = new JTable();
 		String[] header = new String[3];
@@ -115,12 +149,12 @@ public class DisplaySchedule extends JFrame {
 		header[2] = "Days";
 		//header[3] = "Students";
 		
-		String[][] obj = new String[sectionArray.length-1][3];
-		for(int i=0;i<sectionArray.length-1;i++){
-			obj[i][0] = (sectionArray[i].getCourse());
-			obj[i][1] = (sectionArray[i].getFaculty());
-			obj[i][2] = (sectionArray[i].getDays());
-			//obj[i][3] = Integer.toString(numberOfStudents.get(sectionArray[i].getCourse()));
+		String[][] obj = new String[secArray.length][3];
+		for(int i=0;i<secArray.length;i++){
+			obj[i][0] = (secArray[i].getCourse());
+			obj[i][1] = (secArray[i].getFaculty());
+			obj[i][2] = (secArray[i].getDays());
+			//obj[i][3] = Integer.toString(numberOfStudents.get(secArray[i].getCourse()));
 		}
 		
 		table.setModel(new DefaultTableModel(obj,header));

@@ -41,6 +41,7 @@ public class GenerateSchedule extends JFrame {
 	Course[] crsArr;
 	Faculty[] facArr;
 	static Section[] secArray;
+	private JTextField iterations;
 	
 	/**
 	 * Launch the application.
@@ -201,6 +202,7 @@ public class GenerateSchedule extends JFrame {
 								sec.setCourse(crs1);
 								sec.setFaculty(facultyRequired[i]);
 								sec.setDays(facultyAvailable.get(facultyRequired[i]));
+								sec.setSemester(textSemester.getText());
 								
 								secArray[sectionArray.length] = sec;
 								sectionArray = secArray;
@@ -210,6 +212,7 @@ public class GenerateSchedule extends JFrame {
 								sec.setCourse(crs1);
 								sec.setFaculty(facultyRequired[i]);
 								sec.setDays(facultyAvailable.get(facultyRequired[i]));
+								sec.setSemester(textSemester.getText());
 								
 								sectionArray = new Section[1];
 								sectionArray[0] = sec;
@@ -242,159 +245,30 @@ public class GenerateSchedule extends JFrame {
 					System.out.println("Course: "+course+"\t\tCount: "+count);
 				}*/
 				
-				GeneticAlgorithm.GA(studArr, degArr, degPlanArr, sectionArray, 
-						textSectionFill.getText(), facultyLoad, textSectionOverage.getText(), textSemester.getText());
+				GeneticAlgorithm.GA(args, crsArr, facArr, studArr, degArr, degPlanArr, sectionArray, 
+						textSectionFill.getText(), facultyLoad, textSectionOverage.getText(), textSemester.getText(), iterations.getText());
+				//dispose();
 				
-				/*
-				// We will remove the Courses for which Faculty is not available for the semester.
-				Set SOK = coursesFaculty.keySet();
-				Iterator iterator = SOK.iterator();
-				while (iterator.hasNext()){
-					String crs1 = (String) iterator.next();
-					String[] facultyRequired = (String[]) coursesFaculty.get(crs1);
-					boolean flag = false;
-					for(int i=0;i<facultyRequired.length-1;i++){
-						boolean facultyFlag = false;
-						Set SOK2 = facultyAvailable.keySet();
-						Iterator it = SOK2.iterator();
-						while (it.hasNext()){
-							String facAvailable = ((String) it.next());
-							if(facultyRequired[i].equals(facAvailable)){
-								flag = true;
-								facultyFlag = true;
-							}
-						}
-						String[] temp = new String[facultyRequired.length - 1];
-						for(int j=i;j<facultyRequired.length;j++){
-							temp[i] = facultyRequired[i+1];
-						}
-						facultyRequired = temp;
-					}
-					coursesFaculty.put(crs1, facultyRequired);
-					
-					if(!flag){
-						//coursesFaculty.remove(crs1);
-						iterator.remove();
-						//SOK.remove(crs1);
-						coursesOffered.remove(crs1);
-						//Set SOK2 = coursesFaculty.keySet();
-						//SOK2.remove(crs1);
-					}
-				
-				}
-				
-				Set SOK2 = coursesFaculty.keySet();
-				Iterator iterator2 = SOK2.iterator();
-				
-				System.out.println("AVAILABLE COURSES LEFT AFETR REMOVING NOT AVAILABLE FACULTY FOR THE SEM "+textSemester.getText()+" ARE:");
-				while (iterator2.hasNext()){
-					String crs1 = (String) iterator2.next();
-					String[] facultyRequired = (String[]) coursesFaculty.get(crs1);
-					for(int i=0;i<facultyRequired.length;i++){
-						System.out.println("Course: "+crs1+"\t\tFaculty: "+facultyRequired[i]);
-					}
-					
-				}*/
-				
-				/*for(int i=1;i<studArr.length;i++){ 
-					Student stud = studArr[i];
-					String[] studCourse = stud.getCourseNum();
-					String[] grade = stud.getGrade();
-					String[] semester = stud.getCourseSemester();
-					
-					if(studCourse != null){
-						for(int j=0; j<studCourse.length;j++){
-							System.out.println("Line 212 " + grade[j]);
-							//if(textSemester.getText().equalsIgnoreCase(semester[j])){
-								if(!(("A").equalsIgnoreCase(grade[j]) || ("B").equalsIgnoreCase(grade[j]) || 
-										("C").equalsIgnoreCase(grade[j]) || ("D").equalsIgnoreCase(grade[j]))){
-									System.out.println("Line 214");
-									Set SOK2 = coursesOffered.keySet();
-									Iterator iter = SOK2.iterator();
-									while (iter.hasNext()){
-										String crs = (String) iter.next();
-										int number = coursesOffered.get(crs);		// Getting the exisiting number of students in the course.
-										System.out.println(number);
-										if(crs.equalsIgnoreCase(studCourse[j])){
-											System.out.println("Line 222");
-											coursesOffered.put(crs, number+1);		// Setting up the new strength to + 1.
-										}
-									}
-								}
-							//}
-						}
-					}
-					
-				}
-				
-				
-				Map<String, String> sectionCourse= new HashMap<>(); 
-				Map<String, String> sectionFaculty= new HashMap<>();
-				Map<String, String> sectionDay= new HashMap<>();
-				
-				Set SOK3 = coursesOffered.keySet();
-				Iterator iter = SOK3.iterator();
-				
-				while (iter.hasNext()){
-					String crs = (String) iter.next();
-					int number = coursesOffered.get(crs).intValue();
-					
-					System.out.println("-----------"+number);
-					//if(number*100/25 > Integer.parseInt(textSectionFill.getText())){
-					if(number*100/25 > 0){
-						int numberOfSections = (number*100/25)+1;
-						
-						System.out.println("-----"+numberOfSections);
-						
-						for(int i=0;i<numberOfSections;i++){
-							String section = crs+i;
-							String course = crs;
-							String[] facAvail = (String[])coursesFaculty.get(crs);
-							String fac = null;
-							System.out.println(course);
-							
-							for(int j=0;j<facAvail.length;j++){
-								if((int)facultyLoad.get(facAvail[j]) > 0){
-									fac = facAvail[j];
-								}
-							}
-							
-							String day = (String)facultyAvailable.get(fac);
-							int facLoad = facultyLoad.get(fac);
-							
-							System.out.println("Section "+section);
-							System.out.println("Course "+crs);
-							System.out.println("Faculty "+fac);
-							System.out.println("Day "+day);
-							
-							sectionCourse.put(section, course);
-							sectionFaculty.put(section, fac);
-							sectionDay.put(section, day);
-							facultyLoad.put(fac, facLoad-1);
-						}
-						
-					}
-					
-				}
-				
-				Set SOK4	 = sectionCourse.keySet();
-				Iterator iter1 = SOK4.iterator();
-				
-				System.out.println("Generated Schedule is:");
-				System.out.println("Course\t\tSection\t\tFaculty\t\tDay");
-				while (iter1.hasNext()){
-					String section = (String) iter1.next();
-					String course = sectionCourse.get(section);
-					String faculty = sectionFaculty.get(section);
-					String day = sectionDay.get(section);
-					
-					System.out.println(course+"\t\t"+section+"\t\t"+faculty+"\t\t"+day);
-				}*/
 			
 			}
 		});
 		
 		JScrollPane scrollPane = new JScrollPane();
+		
+		JButton btnBack = new JButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				args[0]="0";
+				new Home(args).setVisible(true);
+				new Home(args);
+				dispose();
+			}
+		});
+		
+		JLabel lblIterations = new JLabel("Iterations");
+		
+		iterations = new JTextField();
+		iterations.setColumns(10);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -402,26 +276,33 @@ public class GenerateSchedule extends JFrame {
 					.addGap(19)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE)
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 798, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblNewLabel)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(lblNewLabel_1)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(textSectionOverage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addGap(38)))
-							.addPreferredGap(ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
-							.addComponent(textSemester, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(75)
+								.addComponent(lblNewLabel_1)
+								.addComponent(lblNewLabel))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(textSemester, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textSectionOverage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(33)
 									.addComponent(lblNewLabel_2)
-									.addGap(18)
+									.addGap(38)
 									.addComponent(textSectionFill, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addComponent(btnNewButton))
-							.addGap(37))))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(79)
+									.addComponent(btnNewButton)))
+							.addGap(41)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(lblIterations)
+									.addGap(18)
+									.addComponent(iterations, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(btnBack))
+							.addGap(233))))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -429,13 +310,16 @@ public class GenerateSchedule extends JFrame {
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNewLabel)
+						.addComponent(textSemester, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNewLabel_2)
 						.addComponent(textSectionFill, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textSemester, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblIterations)
+						.addComponent(iterations, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNewLabel_1)
 						.addComponent(textSectionOverage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnBack)
 						.addComponent(btnNewButton))
 					.addGap(38)
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
@@ -468,5 +352,6 @@ public class GenerateSchedule extends JFrame {
 		scrollPane.setRowHeaderView(table);
 		contentPane.setLayout(gl_contentPane);
 		
+		dispose();
 	}
 }

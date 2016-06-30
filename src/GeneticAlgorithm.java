@@ -1,6 +1,7 @@
 import java.util.HashMap;
 
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -9,10 +10,10 @@ public class GeneticAlgorithm {
 	
 	static HashMap<String, Integer> courseStudent;
 	
-	public static void GA(final Student[] studArr, final Degree[] degArr, final DegreePlan[] degPlanArr, 
-			final Section[] sectionArray, String minFillPercent, HashMap<String, Integer> facultyLoad, String maxOverage, String semester) {
+	public static void GA(String[] args, Course[] crsArr, Faculty[] facArr, final Student[] studArr, final Degree[] degArr, final DegreePlan[] degPlanArr, 
+			final Section[] sectionArray, String minFillPercent, HashMap<String, Integer> facultyLoad, String maxOverage, String semester, String iterations) {
 		
-		Population pop = new Population(studArr, degArr, degPlanArr, sectionArray, minFillPercent, facultyLoad, maxOverage, semester); // No. of nodes are passed to determine the gene length. Adjacency matrix is passed to calculate the fitness function.
+		Population pop = new Population(studArr, degArr, degPlanArr, sectionArray, minFillPercent, facultyLoad, maxOverage, semester, iterations); // No. of nodes are passed to determine the gene length. Adjacency matrix is passed to calculate the fitness function.
         Individual[] newPop = new Individual[Population.POP_SIZE];
         Individual[] indiv = new Individual[2];
 
@@ -102,10 +103,158 @@ public class GeneticAlgorithm {
         	}
         }
         
-        new DisplaySchedule(sectionArray, numberOfStudents).setVisible(true);;
-		new DisplaySchedule(sectionArray, numberOfStudents);
-		//dispose();
-        
+        int countBestGene = 0;
+		for(int i=0;i<bestGene.length;i++){
+			countBestGene = countBestGene + bestGene[i];
+		}
+		
+		Section[] secArray = new Section[countBestGene];
+		int j=0;
+		for(int i=0;i<sectionArray.length;i++){
+			if(bestGene[i]==1){
+				secArray[j] = sectionArray[i];
+				j++;
+			}
+		}
+		
+		int[][] sectionDayMapping = new int[secArray.length][4];
+		for (int i=0;i<secArray.length;i++){
+			if(secArray[i].getDays().contains("M")){
+				sectionDayMapping[i][0]=1;
+			}
+			if(secArray[i].getDays().contains("T")){
+				sectionDayMapping[i][1]=1;
+			}
+			if(secArray[i].getDays().contains("W")){
+				sectionDayMapping[i][2]=1;
+			}
+			if(secArray[i].getDays().contains("R")){
+				sectionDayMapping[i][3]=1;
+			}
+		}
+		
+		System.out.println("sectionDayMapping");
+		for(int i=0;i<secArray.length;i++){
+			System.out.print("\n");
+			for(int k=0;k<4;k++){
+				System.out.print("\t"+sectionDayMapping[i][k]);
+			}
+		}
+		System.out.print("\n");
+		
+		int[] sectionDayCount = new int[secArray.length];
+		for(int i=0;i<secArray.length;i++){
+			for(int k=0;k<4;k++){
+				//if(i==0)sectionDayCount[0]=sectionDayMapping[0][k];
+				sectionDayCount[i] = sectionDayCount[i]+sectionDayMapping[i][k];
+			}
+		}
+		
+		System.out.println("sectionDayCount");
+		System.out.print("\n");
+		for(int i=0;i<secArray.length;i++){
+			System.out.print(sectionDayCount[i]+"  ");
+		}
+		System.out.print("\n");
+		
+		int[] daySectionCount = new int[4];
+		
+		int[][] FinalSectionDayMapping = new int[secArray.length][4];
+		for(int i=0;i<sectionDayCount.length;i++){
+			if(sectionDayCount[i]==1){
+				for(int k=0;k<4;k++){
+					if(sectionDayMapping[i][k]==1){
+						FinalSectionDayMapping[i][k]=1;
+						daySectionCount[k] = daySectionCount[k] + 1;
+					}
+				}
+				
+			}
+		}
+		for(int i=0;i<sectionDayCount.length;i++){
+			if(sectionDayCount[i]==2){
+				int large = 999999;
+				int min = 0;
+				for(int k=0;k<4;k++){
+					if(sectionDayMapping[i][k]==1){
+						if(daySectionCount[k]<large){
+							min = k;
+							large = daySectionCount[k];
+						}
+					}
+				}
+				FinalSectionDayMapping[i][min]=1;
+				daySectionCount[min] = daySectionCount[min] + 1;
+				
+			}
+		}
+		for(int i=0;i<sectionDayCount.length;i++){
+			if(sectionDayCount[i]==3){
+				int large = 999999;
+				int min = 0;
+				for(int k=0;k<4;k++){
+					if(sectionDayMapping[i][k]==1){
+						if(daySectionCount[k]<large){
+							min = k;
+							large = daySectionCount[k];
+						}
+					}
+				}
+				FinalSectionDayMapping[i][min]=1;
+				daySectionCount[min] = daySectionCount[min] + 1;
+				
+			}
+		}
+		for(int i=0;i<sectionDayCount.length;i++){
+			if(sectionDayCount[i]==4){
+				int large = 999999;
+				int min = 0;
+				for(int k=0;k<4;k++){
+					if(sectionDayMapping[i][k]==1){
+						if(daySectionCount[k]<large){
+							min = k;
+							large = daySectionCount[k];
+						}
+					}
+				}
+				FinalSectionDayMapping[i][min]=1;
+				daySectionCount[min] = daySectionCount[min] + 1;
+				
+			}
+		}
+		
+		
+		for(int i=0;i<secArray.length;i++){
+			for(int k=0;k<4;k++){
+				if(FinalSectionDayMapping[i][k]==1){
+					if(k==0)secArray[i].setDays("M");
+					else if(k==1)secArray[i].setDays("T");
+					else if(k==2)secArray[i].setDays("W");
+					else if(k==3)secArray[i].setDays("R");
+				}
+			}
+		}
+		
+		System.out.print("\n");
+		System.out.print("daySectionCount");
+		System.out.print("\n");
+		for(int i=0;i<4;i++){
+			System.out.print(daySectionCount[i]+"  ");
+		}
+		System.out.print("\n");
+		
+		System.out.print("secArray");
+		System.out.print("\n");
+		for(int i=0;i<secArray.length;i++){
+			System.out.println(secArray[i].getDays());
+		}
+		System.out.print("\n");
+		
+        new DisplaySchedule(args, crsArr, facArr, studArr, degArr, degPlanArr, minFillPercent, 
+        		facultyLoad, maxOverage, semester,secArray, numberOfStudents, bestGene).setVisible(true);
+		new DisplaySchedule(args, crsArr, facArr, studArr, degArr, degPlanArr, minFillPercent, 
+        		facultyLoad, maxOverage, semester,secArray, numberOfStudents, bestGene);
+		
         //return sectionArray;
         		
 	}

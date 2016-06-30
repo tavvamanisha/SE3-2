@@ -4,8 +4,8 @@ import java.util.Random;
 public class Population {
 	
 	public final static int ELITISM_K = 5;
-	public final static int POP_SIZE = 200 + ELITISM_K;  // population size
-	public final static int MAX_ITER = 300;             // max number of iterations
+	public final static int POP_SIZE = 100 + ELITISM_K;  // population size
+	public static int MAX_ITER = 10;             // max number of iterations
 	public final static double MUTATION_RATE = 0.1;     // probability of mutation
 	public final static double CROSSOVER_RATE = 0.8;     // probability of crossover
 
@@ -14,8 +14,9 @@ public class Population {
     public double totalFitness;
 
     public Population(Student[] studArr, Degree[] degArr, DegreePlan[] degPlanArr, 
-			Section[] secArray, String minFillPercent, HashMap<String, Integer> facultyLoad, String maxOverage, String semester) {
+			Section[] secArray, String minFillPercent, HashMap<String, Integer> facultyLoad, String maxOverage, String semester, String iterations) {
         m_population = new Individual[POP_SIZE];
+        MAX_ITER = Integer.parseInt(iterations);
 
         // Chromosome Length Calculation:
         // Each node has 2 possibilities. It can either belong to Clusture 0 or Clusture 1.

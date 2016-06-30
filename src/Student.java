@@ -8,9 +8,24 @@ public class Student {
 	private String[] courseName;
 	private String[] courseSemester;
 	private String[] grade;
+	private int coursesCleared;
+	private int coursesToClear;
 	
 	
 	
+	public int getCoursesCleared() {
+		return coursesCleared;
+	}
+	public void setCoursesCleared(int coursesCleared) {
+		this.coursesCleared = coursesCleared;
+	}
+	
+	public int getCoursesToClear() {
+		return coursesToClear;
+	}
+	public void setCoursesToClear(int coursesToClear) {
+		this.coursesToClear = coursesToClear;
+	}
 	public String[] getGrade() {
 		return grade;
 	}

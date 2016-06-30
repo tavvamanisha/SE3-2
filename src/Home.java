@@ -36,6 +36,7 @@ public class Home extends JFrame {
 	//static Semester[] semArray;
 	static Student[] studentArray;
 	static DegreePlan[] degreePlanArray;
+	static Section[] sectionArray;
 
 	/**
 	 * Launch the application.
@@ -57,6 +58,21 @@ public class Home extends JFrame {
 	}
 	
 	
+	
+
+	public static Section[] getSectionArray() {
+		return sectionArray;
+	}
+
+
+
+
+	public static void setSectionArray(Section[] sectionArray) {
+		Home.sectionArray = sectionArray;
+	}
+
+
+
 
 	public static Student[] getStudentArray() {
 		return studentArray;
@@ -783,8 +799,80 @@ public class Home extends JFrame {
 		JMenu mnReport = new JMenu("Report");
 		mainmenubar.add(mnReport);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("student");
-		mnReport.add(mntmNewMenuItem);
+		JMenu mnSchedule_Report = new JMenu("Schedule Report");
+		mnReport.add(mnSchedule_Report);
+		
+		JMenuItem mntmSection_Report = new JMenuItem("Section Report");
+		mntmSection_Report.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(studentArray == null){
+					JFrame parent = new JFrame();
+			        JOptionPane.showMessageDialog(parent,"Please Generate the Schedule first.");
+				} else{
+					new Section_Report(args, sectionArray).setVisible(true);
+					new Section_Report(args, sectionArray);
+					dispose();
+				}
+				
+			}
+		});
+		mnSchedule_Report.add(mntmSection_Report);
+		
+		JMenuItem mntmFaculty_Report = new JMenuItem("Faculty Report");
+		mntmFaculty_Report.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(studentArray == null){
+					JFrame parent = new JFrame();
+			        JOptionPane.showMessageDialog(parent,"Please Generate the Schedule first.");
+				} else{
+					new Faculty_Report(args, sectionArray, facultyArray).setVisible(true);
+					new Faculty_Report(args, sectionArray, facultyArray);
+					dispose();
+				}
+				
+			}
+		});
+		mnSchedule_Report.add(mntmFaculty_Report);
+		
+		JMenu mnStudentReport = new JMenu("Student Report");
+		mnReport.add(mnStudentReport);
+		
+		JMenuItem mntmDegreeReport = new JMenuItem("Degree Report");
+		
+		mntmDegreeReport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(studentArray == null){
+					JFrame parent = new JFrame();
+			        JOptionPane.showMessageDialog(parent,"Please import Student List first.");
+				} else{
+					new Degree_Report(args,studentArray, degreeArray).setVisible(true);
+					new Degree_Report(args,studentArray, degreeArray);
+					dispose();
+				}
+
+			}
+		});
+		
+		mnStudentReport.add(mntmDegreeReport);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Student Report");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(studentArray == null){
+					JFrame parent = new JFrame();
+			        JOptionPane.showMessageDialog(parent,"Please Generate the Schedule first.");
+				} else{
+					new Student_Enroll(args, studentArray, sectionArray, degreePlanArray).setVisible(true);
+					new Student_Enroll(args, studentArray, sectionArray, degreePlanArray);
+					dispose();
+				}
+
+
+				
+			}
+		});
+		mnStudentReport.add(mntmNewMenuItem);
 		if(args[1].equalsIgnoreCase("A")){
 			mntmNewMenuItem.setEnabled(false);
 		}else if(args[1].equalsIgnoreCase("D")){
@@ -794,9 +882,6 @@ public class Home extends JFrame {
 		
 		JMenu mnNewMenu = new JMenu("Schedule");
 		mainmenubar.add(mnNewMenu);
-		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Test Schedule");
-		mnNewMenu.add(mntmNewMenuItem_2);
 		
 		JMenuItem mntmGenerateSchedule = new JMenuItem("Generate Schedule ");
 		mntmGenerateSchedule.addActionListener(new ActionListener() {

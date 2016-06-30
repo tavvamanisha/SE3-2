@@ -41,6 +41,9 @@ public class Faculty extends JFrame {
 	String day;
 	String degree;
 	
+	String courses;
+	int load;
+	
 	private JTextField txtday;
 
 	/**
@@ -58,6 +61,32 @@ public class Faculty extends JFrame {
 			}
 		});
 	}
+	
+	
+
+	public String getCourses() {
+		return courses;
+	}
+
+
+
+	public void setCourses(String courses) {
+		this.courses = courses;
+	}
+
+
+
+	public int getLoad() {
+		return load;
+	}
+
+
+
+	public void setLoad(int load) {
+		this.load = load;
+	}
+
+
 
 public String getFirstname() {
 		return firstname;
